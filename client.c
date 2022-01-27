@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 16:57:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/01/27 20:30:43 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/01/28 00:33:49 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	ft_error(int ac, char **av)
 		else
 			i++;
 	}
-	if (!av[1][0] || ft_atol(av[1]) == 0 || ft_atol(av[1]) >= INT_MAX)
+	if (!av[1][0] || ft_atol(av[1]) <= 0 || ft_atol(av[1]) >= INT_MAX)
 	{	
 		write(1, "PID is not valid", 16);
 		exit (1);

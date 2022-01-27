@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 16:57:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/01/27 21:13:19 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/01/28 00:31:43 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ void	ft_putchar_fd(char c, int fd)
 void	ft_print_pid(int pid)
 {
 	char	to_print;
+	char		i;
 
 	to_print = 0;
 	if (pid >= 10)
 		ft_print_pid(pid / 10);
-	ft_putchar_fd((pid % 10) + 48, 1);
+	i = (pid % 10) + 48;
+	write(1, &i, 1);
 }
 
 static void	ft_reset(char *s, int *i, int *byte, siginfo_t *info)
