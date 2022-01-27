@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 16:57:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/01/23 16:38:16 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/01/27 21:13:19 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <limits.h>
+#include <stdlib.h>
+
+static int	g_timeout = -1;
 
 void	ft_putchar_fd(char c, int fd)
 {
@@ -45,22 +48,23 @@ static void	ft_handler(int signal, siginfo_t *info, void *context)
 	static int	i = 0;
 	static char	s[INT_MAX];
 
+	g_timeout = 0;
 	(void)context;
-	if (byte == 0)
-		s[i] = '\0';
 	if (byte < 8)
 	{
 		s[i] = s[i] << 1;
 		if (signal == SIGUSR2)
-			s[i] = s[i] + 1;
+				s[i] = s[i] + 1;
 		byte++;
 	}
 	if (byte == 8)
 	{
-		if (!s[i] || i == INT_MAX - 1)
+		if (!s[i])
 		{
 			write(1, s, i);
+			write(1, "\n", 1);
 			ft_reset(s, &i, &byte, info);
+			g_timeout = -1;
 			return ;
 		}
 		byte = 0;
@@ -81,7 +85,13 @@ int	main(void)
 	write(1, "\n", 1);
 	while (1)
 	{
-		pause();
+		if (g_timeout >= 100)
+		{
+			write(STDERR_FILENO, "Timeout !\n", 10);
+			exit(EXIT_FAILURE);
+		}
+		usleep(128);
+		g_timeout += (g_timeout != -1); //if g_timeout est diff de -1, timout++
 	}
 	return (0);
 }
